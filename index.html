@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Public integration documentation for the Permate Attribution SDK for Android.">
+  <title>Permate Attribution SDK for Android</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#5c667a; --line:#dce2ec; --brand:#4f46e5; --soft:#f6f7fb; }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); background:#fff; font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(880px,calc(100% - 32px)); margin:0 auto; padding:64px 0 80px; }
+    header { margin-bottom:44px; }
+    h1 { margin:0 0 12px; font-size:clamp(2rem,5vw,3.4rem); line-height:1.08; letter-spacing:-.035em; }
+    h2 { margin:44px 0 14px; font-size:1.55rem; }
+    p { margin:10px 0; }
+    a { color:var(--brand); }
+    .lede { max-width:720px; color:var(--muted); font-size:1.15rem; }
+    .facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:28px 0; }
+    .card { padding:18px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
+    .label { display:block; color:var(--muted); font-size:.78rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    pre { overflow:auto; padding:18px; border:1px solid var(--line); border-radius:12px; background:#111827; color:#f9fafb; line-height:1.5; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:12px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { font-size:.82rem; letter-spacing:.04em; text-transform:uppercase; }
+    .status { display:inline-block; padding:5px 10px; border-radius:999px; background:#dcfce7; color:#166534; font-weight:700; font-size:.86rem; }
+    footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <span class="status">Public Maven release available</span>
+    <h1>Permate Attribution SDK for Android</h1>
+    <p class="lede">The Permate Attribution SDK connects Android app installs, opens, and deep-link interactions with Permate campaign attribution.</p>
+  </header>
+
+  <section class="facts" aria-label="SDK identifiers">
+    <div class="card"><span class="label">SDK name</span><strong>Permate Attribution SDK for Android</strong></div>
+    <div class="card"><span class="label">Maven ID</span><code>com.permate:permate-attribution</code></div>
+    <div class="card"><span class="label">Current stable version</span><code>3.2.0</code></div>
+  </section>
+
+  <h2>Maven repository</h2>
+  <p>The SDK is distributed from Permate's public, immutable Maven repository:</p>
+  <p><a href="https://sdk.pmcdn1.com/maven/releases/"><strong>https://sdk.pmcdn1.com/maven/releases/</strong></a></p>
+
+  <h2>Install with Gradle</h2>
+  <p>Add the repository to dependency resolution:</p>
+  <pre><code>// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://sdk.pmcdn1.com/maven/releases/") }
+    }
+}</code></pre>
+  <p>Add the stable SDK dependency:</p>
+  <pre><code>// app/build.gradle.kts
+dependencies {
+    implementation("com.permate:permate-attribution:3.2.0")
+}</code></pre>
+
+  <h2>Initialize the SDK</h2>
+  <p>A Permate application key is required. Keep production and staging keys outside source control.</p>
+  <pre><code>PermateAttribution.configure(
+    context = this,
+    appKey = BuildConfig.PERMATE_APP_KEY,
+    options = AttributionOptions(
+        environment = if (BuildConfig.DEBUG) Environment.STAGING else Environment.PRODUCTION,
+        logLevel = if (BuildConfig.DEBUG) LogLevel.VERBOSE else LogLevel.ERROR,
+    ),
+)
+PermateAttribution.start()</code></pre>
+  <p>The Android library supports API 23 and later. A missing or blank app key results in a safe no-op rather than an application crash.</p>
+
+  <h2>Published release and verification</h2>
+  <p>Stable versions are create-only: an existing Maven path is never overwritten. Version <code>3.2.0</code> was independently rebuilt, resolved by a cold-cache consumer, and checked against its signed public release evidence.</p>
+  <table>
+    <thead><tr><th>Resource</th><th>Public link</th></tr></thead>
+    <tbody>
+      <tr><td>Android AAR</td><td><a href="https://sdk.pmcdn1.com/maven/releases/com/permate/permate-attribution/3.2.0/permate-attribution-3.2.0.aar">permate-attribution-3.2.0.aar</a></td></tr>
+      <tr><td>Maven POM</td><td><a href="https://sdk.pmcdn1.com/maven/releases/com/permate/permate-attribution/3.2.0/permate-attribution-3.2.0.pom">permate-attribution-3.2.0.pom</a></td></tr>
+      <tr><td>Gradle module metadata</td><td><a href="https://sdk.pmcdn1.com/maven/releases/com/permate/permate-attribution/3.2.0/permate-attribution-3.2.0.module">permate-attribution-3.2.0.module</a></td></tr>
+      <tr><td>Release evidence marker</td><td><a href="https://sdk.pmcdn1.com/maven/releases/com/permate/permate-attribution/3.2.0/release.json">release.json</a></td></tr>
+    </tbody>
+  </table>
+  <p>SHA-256 sidecars are published beside the AAR, POM, and Gradle module metadata.</p>
+
+  <h2>Distribution policy</h2>
+  <ul>
+    <li>The canonical Maven ID is <code>com.permate:permate-attribution</code>.</li>
+    <li>Stable releases use immutable versioned paths under the repository URL above.</li>
+    <li>The SDK does not require Maven repository authentication.</li>
+    <li>Consumers should use exact versions; preview repositories and mutable aliases are not part of the stable distribution contract.</li>
+  </ul>
+
+  <footer>
+    <p>Copyright © PERMATE GLOBAL JSC. This page is the public distribution and integration reference for the Permate Attribution SDK for Android.</p>
+  </footer>
+</main>
+</body>
+</html>
