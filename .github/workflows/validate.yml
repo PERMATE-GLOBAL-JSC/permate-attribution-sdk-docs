@@ -1,0 +1,22 @@
+name: Validate public SDK documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-docs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Validate rendered documentation and public release
+        run: python3 scripts/validate-release-docs.py --online
+      - name: Compile documentation validator
+        run: python3 -m py_compile scripts/validate-release-docs.py
